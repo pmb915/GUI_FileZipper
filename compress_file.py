@@ -6,7 +6,7 @@ from pathlib import Path
 
 sg.theme('DarkAmber') 
 
-label1 = sg.Text("Select files to compress:")
+label1 = sg.Text("Select files to compress: ")
 input1 = sg.Input(tooltip="use shift/ctrl and select files for multi selection",key='source')
 choose_source_button =sg.FilesBrowse(button_text="Choose", key='srcBtn' , files_delimiter=',')
 
@@ -17,8 +17,12 @@ choose_destination_button =sg.FolderBrowse(button_text="Choose", key= 'destBtn')
 compress_button = sg.Button("Compress", key='compBtn')
 exit_button = sg.Button("Quit")
 
+output_label = sg.Text( key='outputlbl' , text_color='White')
+
 # define the layout
-my_layout = [[label1 , input1 , choose_source_button ], [label2, input2, choose_destination_button],  [compress_button, exit_button]]
+my_layout = [[label1 , input1 , choose_source_button ], 
+              [label2, input2, choose_destination_button], 
+               [compress_button, exit_button, output_label]]
 
 # Create the window
 window = sg.Window("File compress utility program", layout=my_layout)
@@ -37,7 +41,8 @@ while True:
         print("Destination Folder:")
         print(dest_loc)
         ret_val = make_archive(src_list, dest_loc )
-        print(f"ret_val = {ret_val}")
+        window['outputlbl'].update(value=ret_val)
+        # print(f"ret_val = {ret_val}")
     # if your want to Quit or close Windows
     if (event == sg.WIN_CLOSED)  or event == "Quit":
         break
